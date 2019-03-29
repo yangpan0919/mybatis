@@ -17,6 +17,20 @@
       <profile default="true" name="Default" enabled="true">
         <processorPath useClasspath="true" />
       </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="mybatis_plus_boot" />
+        <module name="mybatis_plus_boot_2.x" />
+      </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mp01" target="1.5" />
+      <module name="mp02" target="1.5" />
+      <module name="mybatis_plus_boot" target="1.8" />
+      <module name="mybatis_plus_boot_2.x" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

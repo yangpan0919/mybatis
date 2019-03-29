@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="localRepository" value="D:\mvnrepo\repository2" />
-        <option name="mavenHome" value="D:/fileForStudy/apache-maven-3.3.9" />
-        <option name="userSettingsFile" value="D:\fileForStudy\apache-maven-3.3.9\conf\settings-mime.xml" />
-      </MavenGeneralSettings>
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/mybatis_plus_boot/pom.xml" />
+        <option value="$PROJECT_DIR$/mybatis_plus_boot_2.x/pom.xml" />
+      </list>
     </option>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
