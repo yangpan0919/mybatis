@@ -1,9 +1,8 @@
 package com.study;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.study.Utils.SpringBeanUtil;
 import com.study.beans.Employee;
 import com.study.mapper.EmployeeMapper;
@@ -15,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,7 +36,7 @@ public class MybatisPlusBootApplicationTests {
 	public void testEntityWrapperDelete() {
 
 		employeeMapper.delete(
-				new QueryWrapper<Employee>()
+				new EntityWrapper<Employee>()
 						.eq("last_name", "Tom")
 						.eq("age", 22)
 		);
@@ -56,7 +56,7 @@ public class MybatisPlusBootApplicationTests {
 
 
 		employeeMapper.update(employee,
-				new UpdateWrapper<Employee>()
+				new EntityWrapper<Employee>()
 						.eq("last_name", "Tom")
 						.eq("age", 44)
 		);
@@ -79,9 +79,9 @@ public class MybatisPlusBootApplicationTests {
 
 
 //		List<Employee > emps
-		IPage<Employee> empPages= employeeMapper.selectPage(
+		List<Employee > emps= employeeMapper.selectPage(
 				new Page<Employee>(1,2),
-				new QueryWrapper<Employee>()
+				new EntityWrapper<Employee>()
 						.between("age", 18, 50)
 						.eq("gender", "1")
 						.eq("last_name", "Tom")
@@ -92,7 +92,7 @@ public class MybatisPlusBootApplicationTests {
 
 		);
 
-		System.out.println(empPages.getRecords());
+		System.out.println( emps);
 
 
 

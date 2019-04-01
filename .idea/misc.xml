@@ -8,6 +8,8 @@
       <list>
         <option value="$PROJECT_DIR$/mybatis_plus_boot/pom.xml" />
         <option value="$PROJECT_DIR$/mybatis_plus_boot_2.x/pom.xml" />
+        <option value="$PROJECT_DIR$/MyBatis_plus_autoCode/pom.xml" />
+        <option value="$PROJECT_DIR$/AutoCode/pom.xml" />
       </list>
     </option>
   </component>

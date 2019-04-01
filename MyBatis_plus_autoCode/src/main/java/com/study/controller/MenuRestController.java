@@ -1,0 +1,139 @@
+/*
+ * Copyright (c) 2018-2022 Caratacus, (caratacus@qq.com).
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package com.study.controller;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import com.study.common.annotations.Resources;
+import com.study.enums.AuthTypeEnum;
+import com.study.enums.MenuTypeEnum;
+import com.study.framework.controller.SuperController;
+import com.study.framework.responses.ApiResponses;
+import com.study.model.dto.ComboDTO;
+import com.study.model.dto.MenuDTO;
+import com.study.model.entity.Menu;
+import com.study.model.parm.MenuPARM;
+import com.study.service.IMenuService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * <p>
+ * 菜单表 前端控制器
+ * </p>
+ *
+ * @author Caratacus
+ */
+@Api(tags = {"Menu"}, description = "菜单相关接口")
+@RestController
+@RequestMapping(value = "/menus", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@Validated
+public class MenuRestController extends SuperController {
+
+    @Autowired
+    private IMenuService menuService;
+
+    @Resources
+    @ApiOperation(value = "查询所有菜单")
+    @GetMapping
+    public ApiResponses<List<Menu>> list() {
+        return success(menuService.list());
+    }
+
+    @Resources(auth = AuthTypeEnum.OPEN)
+    @ApiOperation(value = "查询父级菜单(下拉框)")
+    @GetMapping("/combos")
+    public ApiResponses<List<ComboDTO>> combos() {
+        return success(
+                menuService.query().select(Menu::getId, Menu::getMenuName)
+                        .in(Menu::getMenuType, MenuTypeEnum.CATALOG, MenuTypeEnum.MENU)
+                        .entitys(e -> {
+                            ComboDTO combo = new ComboDTO();
+                            combo.setId(e.getId());
+                            combo.setName(e.getMenuName());
+                            return combo;
+                        })
+        );
+    }
+
+    @Resources
+    @ApiOperation(value = "查询单个菜单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "菜单ID", required = true, paramType = "path")
+    })
+    @GetMapping("/{id}")
+    public ApiResponses<MenuDTO> get(@PathVariable("id") Integer id) {
+        return success(menuService.getMenuDTODetails(id));
+    }
+
+    @Resources
+    @ApiOperation(value = "添加菜单")
+    @PostMapping
+    public ApiResponses<Void> create(@RequestBody @Validated(MenuPARM.Create.class) MenuPARM menuPARM) {
+        Menu menu = menuPARM.convert(Menu.class);
+        menuService.saveMenu(menu, menuPARM.getResourceIds());
+        return success(HttpStatus.CREATED);
+    }
+
+    @Resources
+    @ApiOperation(value = "修改菜单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "菜单ID", required = true, paramType = "path")
+    })
+    @PutMapping("/{id}")
+    public ApiResponses<Void> update(@PathVariable("id") Integer id, @RequestBody @Validated(MenuPARM.Update.class) MenuPARM menuPARM) {
+        Menu menu = menuPARM.convert(Menu.class);
+        menu.setId(id);
+        menuService.updateMenu(menu, menuPARM.getResourceIds());
+        return success();
+    }
+
+    @Resources
+    @ApiOperation(value = "删除菜单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "菜单ID", required = true, paramType = "path")
+    })
+    @DeleteMapping("/{id}")
+    public ApiResponses<Void> delete(@PathVariable("id") Integer id) {
+        menuService.removeMenu(id);
+        return success(HttpStatus.NO_CONTENT);
+    }
+
+    @Resources
+    @ApiOperation("设置菜单状态")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "菜单ID", required = true, paramType = "path")
+    })
+    @PutMapping("/{id}/status")
+    public ApiResponses<Void> updateStatus(@PathVariable("id") Integer id, @RequestBody @Validated(MenuPARM.Status.class) MenuPARM menuPARM) {
+        menuService.updateStatus(id, menuPARM.getStatus());
+        return success();
+    }
+
+}
+

@@ -28,13 +28,29 @@ public class TestUtils {
     public static void test(ApplicationContext applicationContext) throws SQLException {
 
         DataSource ds  = ioc.getBean("dataSource",DataSource.class);
-        System.out.println(ds);
+//        System.out.println(ds);
         Connection conn = ds.getConnection();
-        System.out.println(conn);
+        System.out.println("----------------------------------------------------------------------");
 
-        test3();
+        test4();
     }
 
+
+    public static void test4(){
+        Employee employee  = new Employee();
+        employee.setLastName("朱卫红");
+        employee.setEmail("mp@atguigu.com");
+        employee.setGender(2);
+        employee.setAge(11);
+        employee.setId(12);
+//        boolean insert = employee.insert();
+        boolean b = employee.insertOrUpdate();
+        List<Employee> employees = employee.selectAll();
+        System.out.println(employees);
+
+
+        System.out.println(b);
+    }
 
 
     public static void test1(){
@@ -82,9 +98,7 @@ public class TestUtils {
         System.out.println(employeeIPage.getRecords());
     }
 
-    public static void test4(){
 
-    }
 
 
 }

@@ -7,10 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import com.study.Utils.SpringBeanUtil;
 import com.study.beans.Employee;
 import com.study.mapper.EmployeeMapper;

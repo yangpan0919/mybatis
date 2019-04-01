@@ -22,13 +22,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="AutoCode" />
+        <module name="MyBatis_plus_autoCode" />
         <module name="mybatis_plus_boot" />
         <module name="mybatis_plus_boot_2.x" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="AutoCode" target="1.8" />
       <module name="mp01" target="1.5" />
       <module name="mp02" target="1.5" />
+      <module name="MyBatis_plus_autoCode" target="1.8" />
       <module name="mybatis_plus_boot" target="1.8" />
       <module name="mybatis_plus_boot_2.x" target="1.8" />
     </bytecodeTargetLevel>

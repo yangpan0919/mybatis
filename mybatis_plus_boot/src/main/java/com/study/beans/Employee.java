@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
+import java.io.Serializable;
 
 /**
  * javaBean
@@ -21,12 +24,17 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * 
  */
 @TableName(value="tbl_employee")
-public class Employee {
+public class Employee extends Model<Employee>{
+	@Override
+	protected Serializable pkVal() {
+		return id;
+	}
+
 	/*
-	 * @TableId:
-	 * 	 value: 指定表中的主键列的列名， 如果实体属性名与列名一致，可以省略不指定. 
-	 *   type: 指定主键策略. 
-	 */
+         * @TableId:
+         * 	 value: 指定表中的主键列的列名， 如果实体属性名与列名一致，可以省略不指定.
+         *   type: 指定主键策略.
+         */
 	@TableId(value="id" , type = IdType.AUTO)
 	private Integer id ;   //  int 
 	
