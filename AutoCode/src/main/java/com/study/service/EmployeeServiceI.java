@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author YP
  * @since 2019-04-01
  */
-public interface IEmployeeService extends IService<Employee> {
+public interface EmployeeServiceI extends IService<Employee> {
 
 }

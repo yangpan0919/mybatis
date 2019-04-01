@@ -3,11 +3,10 @@ package com.study;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.InjectionConfig;
+import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableFill;
+import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,15 +14,42 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AutoCodeApplicationTests {
 
 	public static String tableName = "tbl_employee";
+	/**
+	 * 获取TemplateConfig
+	 *
+	 * @return
+	 */
+	protected TemplateConfig getTemplateConfig() {
+		return new TemplateConfig().setXml(null);
+	}
+	/**
+	 * 获取InjectionConfig
+	 *
+	 * @return
+	 */
+	protected InjectionConfig getInjectionConfig() {
+		return new InjectionConfig() {
+			@Override
+			public void initMap() {
+				Map<String, Object> map = new HashMap<>();
+				this.setMap(map);
+			}
+		}.setFileOutConfigList(Collections.<FileOutConfig>singletonList(new FileOutConfig(
+				"/templates/mapper.xml.vm") {
+			// 自定义输出文件目录
+			@Override
+			public String outputFile(TableInfo tableInfo) {
+				return getResourcePath() + "/mapper/" + tableInfo.getEntityName() + "Mapper.xml";
+			}
+		}));
+	}
 	/**
 	 * 获取TableFill策略
 	 *
@@ -80,7 +106,7 @@ public class AutoCodeApplicationTests {
 		//1. 全局配置
 		GlobalConfig config = new GlobalConfig();
 		config.setOutputDir(getJavaPath())//输出目录
-				.setFileOverride(false)// 是否覆盖文件
+				.setFileOverride(true)// 是否覆盖文件
 				.setActiveRecord(true)// 开启 activeRecord 模式  (AR模式)
 				.setEnableCache(false)// XML 二级缓存
 				.setBaseResultMap(false)// XML ResultMap
@@ -129,7 +155,7 @@ public class AutoCodeApplicationTests {
 				// 【实体】是否为构建者模型（默认 false）
 				.setEntityBuilderModel(false)
 				// 【实体】是否为lombok模型（默认 false）<a href="https://projectlombok.org/">document</a>
-				.setEntityLombokModel(true)
+//				.setEntityLombokModel(true)
 				// Boolean类型字段是否移除is前缀处理
 				.setEntityBooleanColumnRemoveIsPrefix(true)
 				.setRestControllerStyle(false)
@@ -147,11 +173,17 @@ public class AutoCodeApplicationTests {
 
 		//5. 整合配置
 		AutoGenerator ag = new AutoGenerator();
-
-		ag.setGlobalConfig(config)
+		         // 全局配置
+		ag.      setGlobalConfig(config)
+				// 数据源配置
 				.setDataSource(dsConfig)
+				// 策略配置
 				.setStrategy(stConfig)
-				.setPackageInfo(pkConfig);
+				// 包配置
+				.setPackageInfo(pkConfig)
+		// 注入自定义配置，可以在 VM 中使用 cfg.abc 设置的值
+		.setCfg(getInjectionConfig())
+				.setTemplate(getTemplateConfig());
 
 		//6. 执行
 		ag.execute();
