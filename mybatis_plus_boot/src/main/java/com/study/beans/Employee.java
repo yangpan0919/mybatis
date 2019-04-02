@@ -1,10 +1,7 @@
 package com.study.beans;
 
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
@@ -43,10 +40,20 @@ public class Employee extends Model<Employee>{
 	private String  email ;
 	private Integer gender; 
 	private Integer age ;
+	@Version
+	private Integer version;
 	
 	@TableField(exist=false)
 	private Double salary ;
-	
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
 	public Double getSalary() {
 		return salary;
 	}

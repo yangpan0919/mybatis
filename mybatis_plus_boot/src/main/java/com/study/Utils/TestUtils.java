@@ -32,10 +32,15 @@ public class TestUtils {
         Connection conn = ds.getConnection();
         System.out.println("----------------------------------------------------------------------");
 
-        test4();
+        test5();
     }
 
 
+    public static void test5(){
+        boolean delete = new Employee().delete(null);
+        System.out.println(delete);
+
+    }
     public static void test4(){
         Employee employee  = new Employee();
         employee.setLastName("朱卫红");
@@ -82,7 +87,10 @@ public class TestUtils {
     }
 
     public static void test3(){
+        long start = System.currentTimeMillis();
         Employee employee = employeeMapper.selectById(1);
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
         System.out.println(employee);
 
 //        Employee employee1 = employeeMapper.selectOne(new QueryWrapper<Employee>().eq("last_name", "朱卫紅"));
@@ -90,11 +98,18 @@ public class TestUtils {
         Map<String ,Object> columMap = new HashMap<>();
         columMap.put("last_name","朱卫紅");
         columMap.put("gender","1");
-
+        long start1 = System.currentTimeMillis();
         List<Employee> employees1 = employeeMapper.selectByMap(columMap);
-
-        IPage<Employee> employeeIPage = employeeMapper.selectPage(new Page<>(3,2), new QueryWrapper<>());
-
+        long end1 = System.currentTimeMillis();
+        System.out.println(end1 - start1);
+        IPage<Employee> employeeIPage = employeeMapper.selectPage(new Page<>(2,2), new QueryWrapper<>());
+        long end2 = System.currentTimeMillis();
+        System.out.println(end2 - end1);
+//
+//        System.out.println(employeeIPage.getCurrent());
+//        System.out.println(employeeIPage.getPages());
+//        System.out.println(employeeIPage.getTotal());
+//        System.out.println(employeeIPage.getSize());
         System.out.println(employeeIPage.getRecords());
     }
 

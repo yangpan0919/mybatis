@@ -82,8 +82,9 @@ public class TestUtils {
 //					.eq("last_name", "Tom")
 //				);
 //		System.out.println(emps);
-        List<Employee > emps = employeeMapper.selectPage(new Page<Employee>(1,2),
-                new EntityWrapper<Employee>().between("age",18,50).eq("gender",1).eq("last_name","朱卫紅")
+        List<Employee > emps = employeeMapper.selectPage(new Page<Employee>(2,3),
+                new EntityWrapper<Employee>().eq("gender",1)
+//                new EntityWrapper<Employee>().between("age",18,50).eq("gender",1).eq("last_name","朱卫紅")
         );
 
 //        List<Employee > emps = employeeMapper.selectPage(

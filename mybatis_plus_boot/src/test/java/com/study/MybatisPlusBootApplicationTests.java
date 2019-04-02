@@ -7,8 +7,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.study.Utils.SpringBeanUtil;
 import com.study.beans.Employee;
 import com.study.mapper.EmployeeMapper;
+import com.study.mapper.UserMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -21,12 +23,23 @@ import java.sql.Connection;
 public class MybatisPlusBootApplicationTests {
 
 	private ApplicationContext ioc = SpringBeanUtil.getApplicationContext();
-	private EmployeeMapper employeeMapper =  null;
+	@Autowired
+	private EmployeeMapper employeeMapper ;
+	@Autowired
+	private UserMapper userMapper ;
 //			ioc.getBean("employeeMapper",EmployeeMapper.class);
 
 
+	@Autowired
+	private String str1;
+	@Autowired
+	private String str2;
+
 	@Test
 	public void contextLoads() {
+//		int i = employeeMapper.deleteAll();
+		int i = userMapper.deleteById(2);
+		System.out.println(i);
 	}
 
 	/**
@@ -53,13 +66,15 @@ public class MybatisPlusBootApplicationTests {
 		employee.setLastName("苍老师");
 		employee.setEmail("cls@sina.com");
 		employee.setGender(0);
-
-
-		employeeMapper.update(employee,
-				new UpdateWrapper<Employee>()
-						.eq("last_name", "Tom")
-						.eq("age", 44)
-		);
+		employee.setVersion(1);
+		employee.setId(1);
+		int i =employeeMapper.updateById(employee);   //使用到了乐观锁   version
+		employeeMapper.update(employee,new UpdateWrapper<Employee>().eq("gender",1)); ///使用不到乐观锁    version
+//		int i = employeeMapper.update(employee,
+//				new UpdateWrapper<Employee>()
+//						.eq("id", "1")
+//		);
+		System.out.println(i);
 	}
 
 	/**
